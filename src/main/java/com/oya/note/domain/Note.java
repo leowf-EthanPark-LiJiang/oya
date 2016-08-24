@@ -1,5 +1,7 @@
 package com.oya.note.domain;
 
+import com.oya.user.domain.User;
+
 import javax.persistence.*;
 
 /**
@@ -14,4 +16,13 @@ public class Note {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "UIDPK")
    private long uidPk;
+
+   private User user;
+
+   private int type;
+
+   private String prizeGrade;
+
+   private String prizeDesc;
+
 }

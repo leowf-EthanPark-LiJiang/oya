@@ -16,4 +16,9 @@ public class NoteController {
    public JsonDto save() {
       return JsonDto.successDto();
    }
+
+   @RequestMapping("/report.ep")
+   public JsonDto outputReport() {
+      return JsonDto.successDto();
+   }
 }
