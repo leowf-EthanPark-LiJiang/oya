@@ -1,5 +1,7 @@
 package com.oya.note.domain;
 
+import java.sql.Date;
+
 import javax.persistence.*;
 
 import com.oya.user.domain.User;
@@ -17,13 +19,25 @@ public class Note {
    @Column(name = "UIDPK")
    private long uidPk;
 
+   @ManyToOne
+   @JoinColumn(name = "USER_UID")
    private User user;
 
+   @Basic
+   @Column(name = "TYPE")
    private int type;
 
+   @Basic
+   @Column(name = "PRIZE_GRADE")
    private String prizeGrade;
 
+   @Basic
+   @Column(name = "PRIZE_DESC")
    private String prizeDesc;
+
+   @Temporal(TemporalType.DATE)
+   @Column(name = "RECORD_DATE")
+   private Date recordDate;
 
    public long getUidPk() {
       return uidPk;
@@ -63,5 +77,13 @@ public class Note {
 
    public void setPrizeDesc(String prizeDesc) {
       this.prizeDesc = prizeDesc;
+   }
+
+   public Date getRecordDate() {
+      return recordDate;
+   }
+
+   public void setRecordDate(Date recordDate) {
+      this.recordDate = recordDate;
    }
 }

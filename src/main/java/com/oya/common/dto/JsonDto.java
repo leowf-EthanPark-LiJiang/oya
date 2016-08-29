@@ -1,5 +1,6 @@
 package com.oya.common.dto;
 
+import com.oya.common.constant.JsonDtoFlag;
 import com.oya.note.constant.NoteConstant;
 
 /**
@@ -25,10 +26,15 @@ public class JsonDto implements Dto {
       this.resultMessage = resultMessage;
    }
 
-   public static JsonDto successDto() {
-      JsonDto dto = new JsonDto();
-      dto.setResultCode(NoteConstant.SUCCESS_CODE);
-      dto.setResultMessage(NoteConstant.SUCCESS_MESSAGE);
-      return dto;
+   public JsonDto formSuccessDto() {
+      this.resultCode = JsonDtoFlag.SUCCESS_CODE;
+      this.resultMessage = JsonDtoFlag.SUCCESS_MESSAGE;
+      return this;
+   }
+
+   public JsonDto formFailureDto(Exception e) {
+      this.resultCode = JsonDtoFlag.FAILURE_CODE;
+      this.resultMessage = e.getMessage();
+      return this;
    }
 }
