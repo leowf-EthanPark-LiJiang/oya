@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <link rel="stylesheet" media="screen" href="../../css/common/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="../../css/common/bootstrap-theme.min.css">
+    <link rel="stylesheet" media="screen" href="../../css/common/mycommon.css">
+    <style>
+        #tag {
+            top: 20%;
+            height: 20%;
+            font-size: 80%;
+        }
+
+        #bk {
+            background-image: url(../../img/note/bg-style.jpg);
+            background-size: 100%;
+            width: 90%;
+            left: 5%;
+            margin-top: 0;
+            position: absolute;
+        }
+    </style>
+</head>
+<body id="bk">
+<nav class="navbar navbar-default ">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand topnav" href="about.html">
+                <img alt="Brand" src="../img/logo.jpg">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav nav-pills ulbar">
+                <li role="presentation"><a href="#">修改个人信息</a></li>
+                <li role="presentation"><a href="#" data-target="#myModal" data-toggle="modal">添加获奖记录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row" style="background: yellow" id="content">
+        hello world
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="btnCloseClick()">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">获奖记录</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form class="form-horizontal" style="margin-right: 10px;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">请问你的获奖类型？</label>
+
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="prizeType" ng-model="主题"
+                                       data-toggle="tooltip"
+                                       title="不能为空">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">是今天获得奖么？</label>
+
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="isNoteToday" ng-model="主题"
+                                       data-toggle="tooltip"
+                                       title="不能为空">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">获得是几等奖？</label>
+
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="prizeGrade" ng-model="主题"
+                                       data-toggle="tooltip"
+                                       title="不能为空">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                描述一下吧</label>
+
+                            <div class="col-sm-6">
+                                <textarea class="form-control" rows="3" id="prizeDesc" ng-model="描述"
+                                          data-toggle="tooltip" title="可为空"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="divModalContentDel">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="createNoteSave" autocomplete="off"
+                        data-loading-text='loading...' ng-click="btnSaveClick()">保存
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close"
+                        ng-click="btnCloseClick()">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/framework/jquery-1.11.3.js"></script>
+<script src="../../js/framework/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var Note = {
+        renderNote: function (data) {
+            $("#content").html(data.content);
+        },
+
+        loadNote: function () {
+            var instance = this;
+            $.ajax({
+                url: "/rest/1/report.ep",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json"
+                },
+                success: function (data) {
+                    if (data.resultCode == "200" && data.resultMessage == "SUCCESS") {
+                        instance.renderNote(data);
+                    } else {
+                        alert("Show Note Failed! \n" + data.returnMessage);
+                    }
+                }
+            });
+        },
+        load: function () {
+            this.loadNote();
+            var instance = this;
+            $("#createNoteSave").click(function () {
+                instance.submit();
+            });
+        },
+
+        submit: function () {
+            var dict = {
+                "type": 0
+            };
+
+            dict["type"] = parseInt($("#prizeType").val());
+            dict["prizeGrade"] = $("#prizeGrade").val();
+            dict["prizeDesc"] = $("#prizeDesc").val();
+
+            $
+                    .ajax({
+                        url: "/rest/save.ep",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-type": "application/json"
+                        },
+                        method: "post",
+                        data: JSON.stringify(dict),
+                        success: function (data) {
+                            if (data.resultCode == "200"
+                                    && data.resultMessage == "SUCCESS") {
+                                alert("Create Note Success!");
+                            } else {
+                                alert("Show Note Failed! \n" + data.returnMessage);
+                            }
+                        }
+                    });
+        }
+    };
+    Note.load();
+</script>
+</html>
