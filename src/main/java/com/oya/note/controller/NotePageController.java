@@ -1,5 +1,7 @@
 package com.oya.note.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,8 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/note")
 public class NotePageController {
+
+   private static final Logger LOGGER = LoggerFactory
+         .getLogger(NotePageController.class);
+
    @RequestMapping("/note.html")
    public String notePage() {
+      LOGGER.info("Enter into note.html");
       return "note/note";
    }
 }
